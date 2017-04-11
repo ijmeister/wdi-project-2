@@ -1,0 +1,29 @@
+{
+  "name": "wdi-project-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ijmeister/wdi-project-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ijmeister/wdi-project-2/issues"
+  },
+  "homepage": "https://github.com/ijmeister/wdi-project-2#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-ejs-layouts": "^2.3.0",
+    "mongoose": "^4.9.4",
+    "nodemon": "^1.11.0"
+  }
+}
