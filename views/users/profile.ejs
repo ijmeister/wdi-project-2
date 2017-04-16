@@ -1,0 +1,53 @@
+<div class="page-header">
+    <h1>User Profile</h1>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Profile Details</h2>
+    </div>
+    <div class="panel-body">
+      <div class="col-sm-offset-11 col-sm-1">
+          <button id="editToggleBtn" type="button" class="btn btn-primary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>
+      </div>
+      <form class="form-horizontal">
+          <div class="form-group">
+              <label for="authEmail" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10">
+                  <p class="form-control-static">email@example.com</p>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authPassword" class="col-sm-2 control-label">Password</label>
+              <div class="col-sm-10">
+                  <input id="authPassword" class="form-control" type="password" name="password" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authName" class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-10">
+                  <input id="authName" class="form-control" type="name" name="name" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authTargetExpense" class="col-sm-2 control-label">Target Spending</label>
+              <div class="col-sm-10">
+                  <input id="authTargetExpense" class="form-control" type="targetExpense" name="targetExpense" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authExpenseCycle" class="col-sm-2 control-label">Expense Window (Day of Month)</label>
+              <div class="col-sm-10">
+                  <input id="authExpenseCycle" class="form-control" type="expenseCycle" name="expenseCycle" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                  <button id="saveBtn" type="submit" class="btn btn-primary" disabled="disabled">Save</button>
+              </div>
+          </div>
+      </form>
+    </div>
+</div>
+
+<script src="../js/script.js" charset="utf-8"></script>

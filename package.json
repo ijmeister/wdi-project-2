@@ -30,16 +30,27 @@
     "express-session": "^1.15.2",
     "method-override": "^2.3.4",
     "mongoose": "^4.7.6",
+    "mongoose-unique-validator": "^1.0.5",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "validator": "^7.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "mocha-mongoose": "^1.2.0",
     "morgan": "^1.8.1",
     "supertest": "^3.0.0"
+  },
+  "standard": {
+    "globals": [
+      "$",
+      "alert",
+      "describe",
+      "it",
+      "beforeEach",
+      "after"
+    ]
   }
 }
