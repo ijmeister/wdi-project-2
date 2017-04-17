@@ -49,7 +49,11 @@ app.use(passport.session())
 
 // routers
 app.get('/', function (req, res) {
-  res.render('home')
+  res.redirect('/users/login')
+  // res.render('home', {
+  //   extractScripts: true,
+  //   extractStyles: true
+  // })
 })
 
 app.use('/users', userRouter)
