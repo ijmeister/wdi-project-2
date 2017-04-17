@@ -21,6 +21,7 @@ let usersController = {
       error: req.flash('error'),
       // layout: 'layouts/dashboard',
       extractScripts: true,
+      extractStyles: true,
       userSession: req.user
     })
   },
@@ -40,6 +41,7 @@ let usersController = {
         res.render('users/profile', {
           // layout: 'layouts/dashboard',
           extractScripts: true,
+          extractStyles: true,
           userSession: req.user,
           userInfo: userInfo,
           success: req.flash('success'),
