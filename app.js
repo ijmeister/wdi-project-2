@@ -39,7 +39,7 @@ app.use(session({
 // app.use(morgan)
 app.set('view engine', 'ejs')
 app.use(ejsLayouts)
-app.use(require('morgan')('dev'))
+// app.use(require('morgan')('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(flash())
