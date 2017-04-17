@@ -13,6 +13,7 @@ require('dotenv').config({ silent: true })
 
 // routers
 const userRouter = require('./routes/users_router')
+const categoryRouter = require('./routes/categories_router')
 
 const PORT = process.env.PORT || 3000
 var dbURI
@@ -52,6 +53,7 @@ app.get('/', function (req, res) {
 })
 
 app.use('/users', userRouter)
+app.use('/categories', categoryRouter)
 
 app.listen(PORT, function () {
   console.log('express server running at ' + PORT)

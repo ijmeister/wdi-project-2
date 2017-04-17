@@ -19,7 +19,9 @@ router.route('/login')
 
 router.route('/profile')
 .get(userController.viewProfile)
+.post(userController.update)
 
+router.post('/profile/pwd', userController.updatePwd)
 // router.route('/:id')
 // .get(todoController.listOne)
 // .put(todoController.update)

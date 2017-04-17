@@ -1,7 +1,16 @@
 <div class="page-header">
     <h1>User Profile</h1>
 </div>
-
+<% if(success && success.length) { %>
+  <div class="alert alert-success" role="alert">
+    <%- success %>
+  </div>
+<% } %>
+<% if(error && error.length) { %>
+  <div class="alert alert-danger" role="alert">
+    <%- error %>
+  </div>
+<% } %>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h2 class="panel-title">Profile Details</h2>
@@ -10,35 +19,29 @@
       <div class="col-sm-offset-11 col-sm-1">
           <button id="editToggleBtn" type="button" class="btn btn-primary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>
       </div>
-      <form class="form-horizontal">
+      <form class="form-horizontal" action="/users/profile" method="POST">
           <div class="form-group">
               <label for="authEmail" class="col-sm-2 control-label">Email</label>
               <div class="col-sm-10">
-                  <p class="form-control-static">email@example.com</p>
-              </div>
-          </div>
-          <div class="form-group">
-              <label for="authPassword" class="col-sm-2 control-label">Password</label>
-              <div class="col-sm-10">
-                  <input id="authPassword" class="form-control" type="password" name="password" disabled>
+                  <p class="form-control-static"><%- userInfo.belongs_to.email %></p>
               </div>
           </div>
           <div class="form-group">
               <label for="authName" class="col-sm-2 control-label">Name</label>
               <div class="col-sm-10">
-                  <input id="authName" class="form-control" type="name" name="name" disabled>
+                  <input id="authName" class="form-control" type="name" name="name" value="<%- userInfo.name %>" disabled>
               </div>
           </div>
           <div class="form-group">
               <label for="authTargetExpense" class="col-sm-2 control-label">Target Spending</label>
               <div class="col-sm-10">
-                  <input id="authTargetExpense" class="form-control" type="targetExpense" name="targetExpense" disabled>
+                  <input id="authTargetExpense" class="form-control" type="targetExpense" name="targetExpense" value="<%- userInfo.targetExpense %>" disabled>
               </div>
           </div>
           <div class="form-group">
               <label for="authExpenseCycle" class="col-sm-2 control-label">Expense Window (Day of Month)</label>
               <div class="col-sm-10">
-                  <input id="authExpenseCycle" class="form-control" type="expenseCycle" name="expenseCycle" disabled>
+                  <input id="authExpenseCycle" class="form-control" type="expenseCycle" name="expenseCycle" value="<%- userInfo.expenseCycle %>" disabled>
               </div>
           </div>
           <div class="form-group">
@@ -49,5 +52,37 @@
       </form>
     </div>
 </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Change Password</h2>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" action="/users/profile/pwd" method="POST">
+          <div class="form-group">
+              <label for="authCurrPassword" class="col-sm-2 control-label">Current Password</label>
+              <div class="col-sm-10">
+                  <input id="authCurrPassword" class="form-control" type="password" name="currentPassword" value="" placeholder="Current Password" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authPassword" class="col-sm-2 control-label">New Password</label>
+              <div class="col-sm-10">
+                  <input id="authNewPassword" class="form-control" type="password" name="newPassword" value="" placeholder="New Password" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="authNewPassword2" class="col-sm-2 control-label">Confirm New Password</label>
+              <div class="col-sm-10">
+                  <input id="authNewPassword2" class="form-control" type="password" name="newPassword2" value="" placeholder="New Password" disabled>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                  <button id="changePwdBtn" type="submit" class="btn btn-primary" disabled="disabled">Save</button>
+              </div>
+          </div>
+      </form>
+    </div>
+</div>
 
-<script src="../js/script.js" charset="utf-8"></script>
+<script src="../js/profile.js" charset="utf-8"></script>
