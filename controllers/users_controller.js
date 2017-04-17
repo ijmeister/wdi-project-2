@@ -27,7 +27,10 @@ let usersController = {
   },
 
   signupView: (req, res) => {
-    res.render('users/signup')
+    res.render('users/signup', {
+      layout: 'layouts/login',
+      error: req.flash('error')
+    })
   },
 
   viewProfile: (req, res) => {
