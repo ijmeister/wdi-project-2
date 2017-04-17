@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const flash = require('connect-flash')
-const morgan = require('morgan')('dev')
+// const morgan = require('morgan')('dev')
 const passport = require('./config/passport')
 require('dotenv').config({ silent: true })
 
@@ -36,7 +36,7 @@ app.use(session({
 }))
 
 // configure middlewares
-app.use(morgan)
+// app.use(morgan)
 app.set('view engine', 'ejs')
 app.use(ejsLayouts)
 app.use(require('morgan')('dev'))
