@@ -1,59 +1,142 @@
-<h1 class="page-header">Categories</h1>
+<div class="page-header">
+    <h1>Categories</h1>
+</div>
+
+<% if(success && success.length) { %>
+  <div class="alert alert-success" role="alert">
+    <%- success %>
+  </div>
+<% } %>
+<% if(error && error.length) { %>
+  <div class="alert alert-danger" role="alert">
+    <%- error %>
+  </div>
+<% } %>
+
+<!-- Add New Category Modal Trigger -->
+<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#addNewCategoryModal">
+  Add New Category <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</button>
 
 <div class="panel-group" role="tablist" id="category-panel-group">
+  <!-- Populate categories and subcategories -->
+  <!-- List all sub categories -->
+  <!-- Edit Modal Trigger on each edit -->
+  <% categories.forEach(function(category, index) { %>
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+        <div class="panel-heading" role="tab" id="collapseListGroupHeading<%- index + 1 %>">
           <h4 class="panel-title">
-            <a href="#collapseListGroup1" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup1"> Collapsible list group </a>
+            <a href="#collapseListGroup<%- index + 1 %>" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup<%- index + 1 %>">
+              <%- category.name %>
+            </a>
+            <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-category-id="<%- category._id %>" data-type="cat" data-category-name="<%- category.name %>">
+              <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+            </button>
           </h4>
         </div>
-        <div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup1" aria-labelledby="collapseListGroupHeading1" aria-expanded="true">
+        <div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup<%- index + 1 %>" aria-labelledby="collapseListGroupHeading<%- index + 1 %>" aria-expanded="true">
             <ul class="list-group">
-                <li class="list-group-item">Bootply
-                  <button type="button" class="btn btn-default btn-xs" aria-label="Edit">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
-                  </button>
-                </li>
-                <li class="list-group-item">One itmus ac facilin</li>
-                <li class="list-group-item">Second eros</li>
+                <% category.subCategories.forEach(function(subcategory) { %>
+                  <li class="list-group-item"><%- subcategory.name %>
+                      <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-subcategory-id="<%- subcategory._id %>" data-type="subCat" data-subcategory-name="<%- subcategory.name %>">
+                      <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+                    </button>
+                  </li>
+                <% }) %>
+              <!-- End -->
             </ul>
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="collapseListGroupHeading2">
-            <h4 class="panel-title"> <a href="#collapseListGroup2" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup2"> Collapsible list group </a> </h4> </div>
-        <div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup2" aria-labelledby="collapseListGroupHeading2" aria-expanded="true">
-            <ul class="list-group">
-                <li class="list-group-item">Bootply</li>
-                <li class="list-group-item">One itmus ac facilin</li>
-                <li class="list-group-item">Second eros</li>
-            </ul>
+  <% }) %>
+  <!-- End -->
+</div>
+
+<!-- Modal Form for Edit Category -->
+<div class="modal fade" id="editFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edit Category</h4>
+            </div>
+            <div class="modal-body">
+              <!-- category/subCategory Id based on which button triggered the modal -->
+              <form id="categoryEditForm" action="/categories/" method="POST">
+                <div class="form-group">
+                  <label for="categoryEditName">Name</label>
+                  <input type="text" class="form-control" name="categoryEditName">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </form>
+              <p>
+              <form class="deleteForm "method="POST" action="/categories/" method="POST">
+                <div class="input-group">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </form>
+            <!-- code end -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+<!-- Modal Content for Add New Category Form -->
+<div class="modal fade" id="addNewCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addNewCategoryModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add New Category</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Category</h3>
+                    </div>
+                    <div class="panel-body">
+                      <form action="/categories" method="POST">
+                        <div class="form-group">
+                          <label for="categoryName">Name</label>
+                          <input type="text" class="form-control" id="categoryName" name="categoryName">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                      </form>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Subcategory</h3>
+                    </div>
+                    <div class="panel-body">
+                      <form action="/categories" method="POST">
+                        <div class="form-group">
+                          <label for="categoryDropdown">For Category: </label>
+                          <select class="form-control" id="categoryDropdown" name="categoryId">
+                            <!-- Populate Categories -->
+                            <% categories.forEach(function(category) {  %>
+                            <option value="<%- category._id %>"><%- category.name %></option>
+                            <% }) %>
+                            <!-- End -->
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="subCategoryName">Name</label>
+                          <input type="text" class="form-control" id="subCategoryName" name="subCategoryName">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 
 <link rel="stylesheet" href="../css/style.css">
