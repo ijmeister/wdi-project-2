@@ -2,17 +2,6 @@
     <h1>Categories</h1>
 </div>
 
-<% if(success && success.length) { %>
-  <div class="alert alert-success" role="alert">
-    <%- success %>
-  </div>
-<% } %>
-<% if(error && error.length) { %>
-  <div class="alert alert-danger" role="alert">
-    <%- error %>
-  </div>
-<% } %>
-
 <!-- Add New Category Modal Trigger -->
 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#addNewCategoryModal">
   Add New Category <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

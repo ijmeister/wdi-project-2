@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/users_controller')
+const isLoggedIn = require('../middleware/isLoggedIn')
 
 router.route('/')
 .get(userController.loginView)
-//.post(userController.add)
 
-router.get('/dashboard', userController.dashboard)
+router.get('/dashboard', isLoggedIn, userController.dashboard)
 
 router.route('/signup')
 .get(userController.signupView)
@@ -18,15 +18,15 @@ router.route('/login')
 .post(userController.processLogin)
 
 router.route('/profile')
-.get(userController.viewProfile)
-.post(userController.update)
+.get(isLoggedIn, userController.viewProfile)
+.post(isLoggedIn, userController.update)
 
-router.post('/profile/pwd', userController.updatePwd)
+router.post('/profile/pwd', isLoggedIn, userController.updatePwd)
 // router.route('/:id')
 // .get(todoController.listOne)
 // .put(todoController.update)
 // .delete(todoController.delete)
 
-router.get('/logout', userController.processLogout)
+router.get('/logout', isLoggedIn, userController.processLogout)
 
 module.exports = router

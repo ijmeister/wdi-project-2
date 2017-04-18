@@ -6,8 +6,7 @@ let usersController = {
   loginView: (req, res) => {
     if (req.isAuthenticated()) return res.redirect('/users/dashboard')
     res.render('users/login', {
-      layout: 'layouts/login',
-      error: req.flash('error')
+      layout: 'layouts/login'
     })
   },
   processLogin: passport.authenticate('local', {
@@ -16,25 +15,25 @@ let usersController = {
     failureFlash: true
   }),
   dashboard: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     res.render('dashboard', {
-      error: req.flash('error'),
+      // error: req.flash('error'),
       // layout: 'layouts/dashboard',
       extractScripts: true,
-      extractStyles: true,
-      userSession: req.user
+      extractStyles: true
+      // userSession: req.user
     })
   },
 
   signupView: (req, res) => {
     res.render('users/signup', {
-      layout: 'layouts/login',
-      error: req.flash('error')
+      layout: 'layouts/login'
+      // error: req.flash('error')
     })
   },
 
   viewProfile: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     UserInfo.findByUserId(req.user._id, (err, userInfo) => {
       if (err) {
         req.flash('error', 'Something went wrong. Please contact for help.')
@@ -45,10 +44,10 @@ let usersController = {
           // layout: 'layouts/dashboard',
           extractScripts: true,
           extractStyles: true,
-          userSession: req.user,
-          userInfo: userInfo,
-          success: req.flash('success'),
-          error: req.flash('error')
+          // userSession: req.user,
+          userInfo: userInfo
+          // success: req.flash('success'),
+          // error: req.flash('error')
         })
       }
     })
@@ -62,80 +61,76 @@ let usersController = {
   // },
 
   add: (req, res) => {
-    // res.send(req.body)
-    var newUser = new User({
-      email: req.body.email,
-      password: req.body.password
-    })
-    newUser.save(function (err, aUser) {
-      if (err) {
-        console.error(err)
-        // res.send(err)
-        res.redirect('/users/signup')
-      } else {
-        UserInfo.create({
-          name: req.body.name,
-          targetExpense: req.body.targetExpense,
-          expenseCycle: req.body.expenseCycle,
-          belongs_to: aUser._id
-        }, (err, userInfoNew) => {
-          if (err) {
-            // FLASH
-            console.log('An error occurred: ' + err)
-            res.redirect('/users/signup')
+    // validate UserInfo
+    var validateError = new UserInfo({
+      name: req.body.name,
+      targetExpense: req.body.targetExpense,
+      expenseCycle: req.body.expenseCycle
+    }).validateSync()
+    delete validateError.errors['belongs_to']
+    if (Object.keys(validateError.errors).length) {
+      // console.log(Object.keys(validateError.errors).length)
+      // res.send(validateError)
+      req.flash('error', 'Please check your inputs. All fields are required.')
+      res.redirect('/users/signup')
+    } else {
+      var newUser = new User({
+        email: req.body.email,
+        password: req.body.password
+      })
+      newUser.save(function (err, aUser) {
+        if (err) {
+          // console.error(err)
+          // res.send(err)
+          if (err.errors[ 'email' ] && err.errors[ 'email' ].kind === 'unique') {
+            req.flash('error', 'An email with the same address already exist.')
           } else {
-            // FLASH
-            passport.authenticate('local', {
-              successRedirect: '/users/dashboard'
-            })(req, res)
+            req.flash('error', 'Please check your inputs. All fields are required and password must be 8 characters long.')
           }
-        })
-        // console.log('successfully created new user')
-        // console.log(aUser)
-      }
-    })
+          res.redirect('/users/signup')
+        } else {
+          UserInfo.create({
+            name: req.body.name,
+            targetExpense: req.body.targetExpense,
+            expenseCycle: req.body.expenseCycle,
+            belongs_to: aUser._id
+          }, (err, userInfoNew) => {
+            if (err) {
+              // FLASH
+              console.log('An error occurred: ' + err)
+              res.redirect('/users/signup')
+            } else {
+              // FLASH
+              passport.authenticate('local', {
+                successRedirect: '/users/dashboard'
+              })(req, res)
+            }
+          })
+        }
+      })
+    }
   },
   update: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     UserInfo.findOneAndUpdate({ belongs_to: req.user._id }, {
       name: req.body.name,
       targetExpense: req.body.targetExpense,
       expenseCycle: req.body.expenseCycle
     }, function (err, userInfo) {
       if (err) {
-        console.log(err)
+        // console.log(err)
+        req.flash('error', 'Errors encountered during update. Please check your inputs.')
         // Add some errors and redirect to dashboard
-        res.redirect('dashboard')
+        res.redirect('/users/profile')
       } else {
         console.log('successfully updated.')
         req.flash('success', 'Profile updated.')
         res.redirect('/users/profile')
-        // res.redirect('/users/profile')
-        // User.findById(req.user._id, (err, user) => {
-        //   if (err) {
-        //     console.log(err)
-        //     res.redirect('dashboard')
-        //   }
-        //   // user.password = req.body.password
-        //   user.save((err, user) => {
-        //     if (err) {
-        //       console.log(err)
-        //       res.redirect('dashboard')
-        //     } else {
-        //       console.log('successfully updated.')
-        //       req.flash('success', 'Profile updated.')
-        //       res.redirect('/users/profile')
-        //       // passport.authenticate('local', {
-        //       //   successRedirect: '/users/profile'
-        //       // })(req, res)
-        //     }
-        //   })
-        // })
       }
     })
   },
   updatePwd: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     let oldPassword = req.body.currentPassword
     let newPassword = req.body.newPassword
     let newPassword2 = req.body.newPassword2
@@ -146,11 +141,11 @@ let usersController = {
         res.redirect('dashboard')
       } else if (newPassword !== newPassword2) {
       // if the passwords didn't match
-        req.flash('error', 'Passwords did not match')
+        req.flash('error', 'Passwords did not match.')
         res.redirect('/users/profile')
       } else if (!user.validPassword(oldPassword)) {
         // Check if the old password is correct
-        req.flash('error', 'Incorrect old password')
+        req.flash('error', 'Incorrect old password.')
         res.redirect('/users/profile')
       } else {
         // change password
@@ -177,6 +172,7 @@ let usersController = {
   },
   processLogout: (req, res) => {
     req.logout()
+    req.flash('success', 'You have logged out.')
     console.log('logged out')
     res.redirect('/users/login')
   }

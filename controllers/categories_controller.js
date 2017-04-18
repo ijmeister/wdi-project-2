@@ -6,7 +6,7 @@ const SubCategory = require('../models/subCategory')
 
 let categoryController = {
   list: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     Category.find({}, (err, cats) => {
       if (err) {
         console.error(err)
@@ -15,8 +15,8 @@ let categoryController = {
         res.render('categories/list', {
           extractScripts: true,
           extractStyles: true,
-          error: req.flash('error'),
-          success: req.flash('success'),
+          // error: req.flash('error'),
+          // success: req.flash('success'),
           categories: cats
         })
       }
@@ -25,7 +25,7 @@ let categoryController = {
 
   add: (req, res) => {
     // add new category or subcategory
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     if (req.body.categoryId != null && req.body.categoryId) {
       // new sub category
       if (req.body.subCategoryName != null && req.body.subCategoryName) {
@@ -48,7 +48,7 @@ let categoryController = {
                     console.error(err)
                     res.redirect('/categories')
                   } else {
-                    req.flash('success', 'New subcategory created')
+                    req.flash('success', 'New subcategory created.')
                     res.redirect('/categories')
                   }
                 })
@@ -70,58 +70,66 @@ let categoryController = {
             console.error(err)
             res.redirect('/categories')
           } else {
-            req.flash('success', 'New category created')
+            req.flash('success', 'New category created.')
             res.redirect('/categories')
           }
         })
       } else {
-        req.flash('error', 'Invalid category name')
+        req.flash('error', 'Invalid category name.')
         res.redirect('/categories')
       }
     } else {
-      req.flash('error', 'Invalid input')
+      req.flash('error', 'Invalid input.')
       res.redirect('/categories')
     }
   },
 
   updateCat: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     // res.send('CatId' + req.params.id + ' New Name: ' + req.body.categoryEditName)
     // Category.findByIdAndUpdate(req.params.id)
     if (req.body.categoryEditName != null && req.body.categoryEditName) {
       Category.findByIdAndUpdate(req.params.id, { name: req.body.categoryEditName }, (err, cat) => {
         if (err) {
-          req.flash('error', 'Errors encountered while trying to update')
+          req.flash('error', 'Errors encountered while trying to update.')
           res.redirect('/categories')
         } else {
-          req.flash('success', 'Category updated')
+          req.flash('success', 'Category updated.')
           res.redirect('/categories')
         }
       })
     } else {
-      req.flash('error', 'Invalid category name')
+      req.flash('error', 'Invalid category name.')
       res.redirect('/categories')
     }
   },
 
   updateSubCat: (req, res) => {
-    if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
     // res.send('SubCatId:' + req.params.id + ' New Name: ' + req.body.subCategoryEditName)
     // Category.findByIdAndUpdate(req.params.id)
     if (req.body.subCategoryEditName != null && req.body.subCategoryEditName) {
       SubCategory.findByIdAndUpdate(req.params.id, { name: req.body.subCategoryEditName }, (err, subCat) => {
         if (err) {
-          req.flash('error', 'Errors encountered while trying to update')
+          req.flash('error', 'Errors encountered while trying to update.')
           res.redirect('/categories')
         } else {
-          req.flash('success', 'Subcategory updated')
+          req.flash('success', 'Subcategory updated.')
           res.redirect('/categories')
         }
       })
     } else {
-      req.flash('error', 'Invalid subcategory name')
+      req.flash('error', 'Invalid subcategory name.')
       res.redirect('/categories')
     }
+  },
+
+  deleteCat: (req, res) => {
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
+  },
+
+  deleteSubCat: (req, res) => {
+    // if (!req.isAuthenticated()) return res.redirect('/users/login')
   }
 }
 

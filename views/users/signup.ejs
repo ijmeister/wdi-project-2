@@ -1,9 +1,6 @@
-<h1>Sign Up</h1>
-<% if(error && error.length) { %>
-  <div class="alert alert-danger" role="alert">
-    <%- error %>
-  </div>
-<% } %>
+<div class="page-header">
+    <h1>Please Sign Up</h1>
+</div>
 <form action="/users/signup" method="POST">
     <div class="form-group">
         <label for="authEmail">Email</label>

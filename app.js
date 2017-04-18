@@ -11,6 +11,9 @@ const flash = require('connect-flash')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 
+// custom-middleware
+const isLoggedIn = require('./middleware/isLoggedIn')
+
 // routers
 const userRouter = require('./routes/users_router')
 const categoryRouter = require('./routes/categories_router')
@@ -35,7 +38,7 @@ app.use(session({
   store: new MongoStore({ url: dbURI })
 }))
 
-// configure middlewares
+// MIDDLEWARE Config
 // app.use(morgan)
 app.set('view engine', 'ejs')
 app.use(ejsLayouts)
@@ -43,12 +46,22 @@ app.use(ejsLayouts)
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(flash())
+
 // initialize the passport configuration and session as middleware
 app.use(passport.initialize())
 app.use(passport.session())
 
-// routers
+// flash
+app.use(flash())
+app.use(function (req, res, next) {
+  // before every route, attach the flash messages and current user to res.locals
+  res.locals.alerts = req.flash()
+  res.locals.currentUser = req.user
+  next()
+})
+// MIDDLEWARE
+
+// ROUTERS
 app.get('/', function (req, res) {
   res.redirect('/users/login')
   // res.render('home', {
@@ -58,7 +71,10 @@ app.get('/', function (req, res) {
 })
 
 app.use('/users', userRouter)
+app.use(isLoggedIn)
 app.use('/categories', categoryRouter)
+
+// ROUTERS
 
 app.listen(PORT, function () {
   console.log('express server running at ' + PORT)
