@@ -1,5 +1,12 @@
 $(function () {
+  $('a.list-group-item').click(function (event) {
+    var target = $(event.target)
+    if ($(event.target)[0].nodeName !== 'A') {
+      event.preventDefault()
+    }
+  })
   $('#AccountModal').on('show.bs.modal', function (event) {
+    // event.stopPropagation()
     var button = $(event.relatedTarget) // Button that triggered the modal
     var formType = button.data('form-type')
     var modal = $(this)

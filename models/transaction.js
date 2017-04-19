@@ -15,7 +15,7 @@ var TransactionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  created: {
+  date: {
     type: Date,
     required: true
   },

@@ -9,11 +9,10 @@ let accountController = {
     Account.find({ belongs_to: req.user._id }, (err, accs) => {
       if (err) {
         console.error(err)
-        res.redirect('/dashboard')
+        res.redirect('/accounts')
       } else {
-        res.render('dashboard', {
-          extractScripts: true,
-          extractStyles: true,
+        res.render('accounts/dashboard', {
+          layout: 'layouts/accounts',
           accounts: accs
         })
       }
@@ -21,7 +20,17 @@ let accountController = {
   },
 
   viewAcc: (req, res) => {
-
+    Account.find({ belongs_to: req.user._id }, (err, accs) => {
+      if (err) {
+        console.error(err)
+        res.redirect('/accounts')
+      } else {
+        res.render('accounts/list_trans', {
+          layout: 'layouts/accounts',
+          accounts: accs
+        })
+      }
+    })
   },
 
   add: (req, res) => {
