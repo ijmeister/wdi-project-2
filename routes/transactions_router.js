@@ -8,7 +8,9 @@ router.route('/')
 
 router.route('/:id')
 // .get(transController.viewAcc)
-// .put(transController.updateAcc)
-// .delete(accountController.deleteAcc)
+.put(transController.updateTrans)
+
+router.route('/:id/:accountid')
+.delete(transController.deleteTrans)
 
 module.exports = router
