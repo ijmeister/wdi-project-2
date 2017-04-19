@@ -7,7 +7,7 @@ const SubCategory = require('../models/subCategory')
 let categoryController = {
   list: (req, res) => {
     // if (!req.isAuthenticated()) return res.redirect('/users/login')
-    Category.find({}, (err, cats) => {
+    Category.find({ belongs_to: req.user._id }, (err, cats) => {
       if (err) {
         console.error(err)
         res.redirect('/categories')
@@ -64,7 +64,8 @@ let categoryController = {
       // new category
       if (req.body.categoryName) {
         Category.create({
-          name: req.body.categoryName
+          name: req.body.categoryName,
+          belongs_to: req.user._id
         }, (err, cat) => {
           if (err) {
             console.error(err)
@@ -125,11 +126,37 @@ let categoryController = {
   },
 
   deleteCat: (req, res) => {
-    // if (!req.isAuthenticated()) return res.redirect('/users/login')
+    // This should remove all the subcategories as well
+    Category.findByIdAndRemove(req.params.id, (err, cat) => {
+      if (err) {
+        req.flash('error', 'Errors encountered while trying to delete.')
+        res.redirect('/categories')
+      } else {
+        cat.subCategories.forEach((subcategory) => {
+          SubCategory.findByIdAndRemove(subcategory, (err, subcat) => {
+            if (err) {
+              req.flash('error', 'Errors encountered while trying to delete.')
+              res.redirect('/categories')
+            }
+          })
+          req.flash('success', 'Category and its corresponding subcatgories deleted.')
+          res.redirect('/categories')
+        })
+      }
+    })
   },
 
   deleteSubCat: (req, res) => {
     // if (!req.isAuthenticated()) return res.redirect('/users/login')
+    SubCategory.findByIdAndRemove(req.params.id, (err, cat) => {
+      if (err) {
+        req.flash('error', 'Errors encountered while trying to delete.')
+        res.redirect('/categories')
+      } else {
+        req.flash('success', 'Subcategory deleted.')
+        res.redirect('/categories')
+      }
+    })
   }
 }
 

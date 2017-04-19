@@ -1,0 +1,20 @@
+<%# <script src="../js/main.js" charset="utf-8"></script>%>
+<div class="container-fluid">
+  <div class="row row-offcanvas row-offcanvas-right">
+    <div class="col-xs-12 col-sm-9 col-sm-push-3">
+      <button type="button" class="pull-left btn btn-default visible-xs" data-toggle="offcanvas" aria-expanded="false" aria-controls="navbar">
+        <i class="fa fa-navicon"></i>
+      </button>
+      <%- body %>
+    </div><!--/.col-xs-12.col-sm-9-->
+
+    <!-- Side Bar -->
+    <% include ./partials/accountmenu %>
+    <!--/.sidebar-offcanvas-->
+  </div><!--/row-->
+
+  <hr>
+
+</div><!--/.container-->
+
+<script src="../js/account.js" charset="utf-8"></script>

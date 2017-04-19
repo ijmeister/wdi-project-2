@@ -6,7 +6,7 @@ const isLoggedIn = require('../middleware/isLoggedIn')
 router.route('/')
 .get(userController.loginView)
 
-router.get('/dashboard', isLoggedIn, userController.dashboard)
+// router.get('/dashboard', isLoggedIn, userController.dashboard)
 
 router.route('/signup')
 .get(userController.signupView)
@@ -22,10 +22,6 @@ router.route('/profile')
 .post(isLoggedIn, userController.update)
 
 router.post('/profile/pwd', isLoggedIn, userController.updatePwd)
-// router.route('/:id')
-// .get(todoController.listOne)
-// .put(todoController.update)
-// .delete(todoController.delete)
 
 router.get('/logout', isLoggedIn, userController.processLogout)
 

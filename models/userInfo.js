@@ -24,7 +24,6 @@ var UserInfoSchema = new mongoose.Schema({
   }
 })
 
-// assign a function to the "statics" object of our animalSchema
 UserInfoSchema.statics.findByUserId = function (userId, cb) {
   return this.findOne({ belongs_to: userId }, cb).populate('belongs_to')
 }

@@ -8,7 +8,12 @@ var CategorySchema = new mongoose.Schema({
   subCategories: [{
     type: mongoose.Schema.ObjectId,
     ref: 'Sub_Category'
-  }]
+  }],
+  belongs_to: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true
+  }
 })
 
 var Category = mongoose.model('Category', CategorySchema)

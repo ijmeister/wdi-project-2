@@ -14,16 +14,16 @@ let usersController = {
     failureRedirect: '/users/login',
     failureFlash: true
   }),
-  dashboard: (req, res) => {
-    // if (!req.isAuthenticated()) return res.redirect('/users/login')
-    res.render('dashboard', {
-      // error: req.flash('error'),
-      // layout: 'layouts/dashboard',
-      extractScripts: true,
-      extractStyles: true
-      // userSession: req.user
-    })
-  },
+  // dashboard: (req, res) => {
+  //   // if (!req.isAuthenticated()) return res.redirect('/users/login')
+  //   res.render('dashboard', {
+  //     // error: req.flash('error'),
+  //     // layout: 'layouts/dashboard',
+  //     extractScripts: true,
+  //     extractStyles: true
+  //     // userSession: req.user
+  //   })
+  // },
 
   signupView: (req, res) => {
     res.render('users/signup', {
@@ -52,13 +52,6 @@ let usersController = {
       }
     })
   },
-
-  // listOne: (req, res) => {
-  //   Todo.findById(req.params.id, (err, todoItem) => {
-  //     if (err) throw err
-  //     res.render('todo/single-todo', { todoItem: todoItem })
-  //   })
-  // },
 
   add: (req, res) => {
     // validate UserInfo
@@ -173,37 +166,8 @@ let usersController = {
   processLogout: (req, res) => {
     req.logout()
     req.flash('success', 'You have logged out.')
-    console.log('logged out')
     res.redirect('/users/login')
   }
-
-  // edit: (req, res) => {
-  //   Todo.findById(req.params.id, (err, todoItem) => {
-  //     if (err) throw err
-  //     res.render('todo/edit', { todoItem: todoItem })
-  //   })
-  // },
-  //
-  // update: (req, res) => {
-  //   Todo.findOneAndUpdate({
-  //     _id: req.params.id
-  //   }, {
-  //     title: req.body.title,
-  //     description: req.body.description,
-  //     completed: req.body.completed
-  //   }, (err, todoItem) => {
-  //     if (err) throw err
-  //     res.redirect('/todos/' + todoItem.id)
-  //   })
-  // },
-  //
-  // delete: (req, res) => {
-  //   Todo.findByIdAndRemove(req.params.id, (err, todoItem) => {
-  //     if (err) throw err
-  //     res.redirect('/todos')
-  //   })
-  // }
-
 }
 
 module.exports = usersController

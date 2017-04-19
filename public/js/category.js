@@ -11,10 +11,14 @@ $(function () {
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
       modal = $(this)
-      modal.find('form').attr('action', '/categories/sub/' + subCatId + '?_method=PUT')
+      modal.find('form#categoryEditForm').attr('action', '/categories/sub/' + subCatId + '?_method=PUT')
       modal.find('label').attr('for', 'subCategoryEditName')
       modal.find('input').attr('name', 'subCategoryEditName')
       modal.find('input').val(subCatName)
+
+      // set delete form action
+      modal.find('form#categoryDeleteForm').attr('action', '/categories/sub/' + subCatId + '?_method=DELETE')
+
       // modal.find('.modal-title').text('New message to ' + recipient)
       // modal.find('.modal-body input').val(recipient)
     } else if (editType === 'cat') {
@@ -29,6 +33,9 @@ $(function () {
       modal.find('label').attr('for', 'categoryEditName')
       modal.find('input').attr('name', 'categoryEditName')
       modal.find('input').val(catName)
+
+      // set delete form action
+      modal.find('form#categoryDeleteForm').attr('action', '/categories/' + catId + '?_method=DELETE')
     }
   })
 })

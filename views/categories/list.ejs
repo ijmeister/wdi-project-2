@@ -25,9 +25,10 @@
         </div>
         <div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup<%- index + 1 %>" aria-labelledby="collapseListGroupHeading<%- index + 1 %>" aria-expanded="true">
             <ul class="list-group">
+              <!--  -->
                 <% category.subCategories.forEach(function(subcategory) { %>
                   <li class="list-group-item"><%- subcategory.name %>
-                      <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-subcategory-id="<%- subcategory._id %>" data-type="subCat" data-subcategory-name="<%- subcategory.name %>">
+                    <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-subcategory-id="<%- subcategory._id %>" data-type="subCat" data-subcategory-name="<%- subcategory.name %>">
                       <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
                     </button>
                   </li>
@@ -55,13 +56,11 @@
                   <label for="categoryEditName">Name</label>
                   <input type="text" class="form-control" name="categoryEditName">
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary btn-sm">Save</button>
               </form>
               <p>
-              <form class="deleteForm "method="POST" action="/categories/" method="POST">
-                <div class="input-group">
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
+              <form id="categoryDeleteForm" action="/categories/" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
               </form>
             <!-- code end -->
             </div>
