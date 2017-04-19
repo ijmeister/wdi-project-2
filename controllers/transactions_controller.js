@@ -1,24 +1,6 @@
 const Transaction = require('../models/transaction')
 
 let transactionController = {
-  // list: (req, res) => {
-  //   // if (!req.isAuthenticated()) return res.redirect('/users/login')
-  //   Category.find({ belongs_to: req.user._id }, (err, cats) => {
-  //     if (err) {
-  //       console.error(err)
-  //       res.redirect('/categories')
-  //     } else {
-  //       res.render('categories/list', {
-  //         extractScripts: true,
-  //         extractStyles: true,
-  //         // error: req.flash('error'),
-  //         // success: req.flash('success'),
-  //         categories: cats
-  //       })
-  //     }
-  //   }).populate('subCategories')
-  // },
-
   add: (req, res) => {
     // var dateInput = req.body.transDate.split('-')
     var subCatId = req.body.subcategoryId

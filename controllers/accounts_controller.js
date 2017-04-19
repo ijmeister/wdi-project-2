@@ -38,23 +38,23 @@ let accountController = {
               req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
               res.redirect('/accounts')
             } else {
-              // var topCategory
-              // for (var i = 0; i < cats.length; i++) {
-              //   var subCats = cats[i].subCategories
-              //   for (var j = 0; j < subCats.length; j++) {
-              //     console.log(subCats[j]._id,subCats[j].name)
-              //     if (subCats[j]._id == '58f76a63f8cc8b7541f3509d') {
-              //       topCategory = cats[i].name
-              //     }
-              //   }
-              // }
-              // console.log(topCategory)
-              res.render('accounts/list_trans', {
-                layout: 'layouts/accounts',
-                accounts: accs,
-                categories: cats,
-                transactions: trans,
-                accountId: req.params.id
+              var accountIds = accs.map((account) => account._id)
+              console.log(accountIds)
+              Transaction.getAccountsBalance(accountIds, (err, result) => {
+                if (err) {
+                  req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+                  res.redirect('/accounts')
+                } else {
+                  // console.log(result)
+                  res.render('accounts/list_trans', {
+                    layout: 'layouts/accounts',
+                    accounts: accs,
+                    categories: cats,
+                    transactions: trans,
+                    balance: result,
+                    accountId: req.params.id
+                  })
+                }
               })
             }
           }).populate('subCategories')
@@ -99,8 +99,7 @@ let accountController = {
       req.flash('error', 'Invalid account name.')
       res.redirect('/categories')
     }
-  },
-
+  }
 
 }
 

@@ -12,8 +12,7 @@ var TransactionSchema = new mongoose.Schema({
     min: 0
   },
   comment: {
-    type: String,
-    required: true
+    type: String
   },
   date: {
     type: Date,
@@ -30,6 +29,31 @@ var TransactionSchema = new mongoose.Schema({
     required: true
   }
 })
+
+TransactionSchema.statics.getAccountsBalance = function (accountIds, next) {
+  Transaction.aggregate([
+    {
+      $match: {
+        in_account: { $in: accountIds }
+      }
+    },
+    { $group: {
+      _id: '$in_account',
+      balanceIn: { $sum: '$inAmount' },
+      balanceOut: { $sum: '$outAmount' }
+    }}
+  ], function (err, result) {
+    if (err) { return false }
+    console.log(JSON.stringify(result))
+    next(null, result)
+  })
+  // this.findOne({
+  //   email: email
+  // }, function (err, foundUser) {
+  //   if (err) return false
+  //   next(null, foundUser)
+  // })
+}
 
 var Transaction = mongoose.model('Transaction', TransactionSchema)
 

@@ -56,12 +56,93 @@ describe('CRUD on Category Model', function () {
                     if (err) done(err)
                     Transaction.find({}, (err, trans) => {
                       if (err) return done(err)
-                      console.log(trans[0])
                       assert.strictEqual(trans[0].comment, 'my bill')
                       assert.strictEqual(trans[0].in_account.type, 'Savings')
                       assert.deepEqual(trans[0].subcategory._id, subCat._id)
                       done()
                     }).populate('in_account subcategory')
+                  })
+                }
+              })
+            }
+          })
+        })
+      }
+    })
+  })
+
+  it('Getting the balance of each account', function (done) {
+    SubCategory.create({
+      name: 'Telephone Bills'
+    }, function (err, subCat) {
+      if (err) {
+        return done(err)
+      } else {
+        User.create({
+          email: 'test@test.co',
+          password: 'password'
+        }, (err, newUser) => {
+          if (err) return done(err)
+          Category.create({
+            name: 'Bills',
+            subCategories: [ subCat._id ],
+            belongs_to: newUser._id
+          }, (err, cat) => {
+            if (err) {
+              return done(err)
+            } else {
+              Account.create({
+                name: 'DBS Savings',
+                type: 'Savings',
+                belongs_to: newUser._id
+              }, (err, acc) => {
+                if (err) {
+                  return done(err)
+                } else {
+                  Transaction.create({
+                    outAmount: 50,
+                    comment: 'my bill',
+                    date: new Date(2017, 4, 15),
+                    in_account: acc._id,
+                    subcategory: subCat._id
+                  }, (err, trans) => {
+                    if (err) done(err)
+                    Transaction.create({
+                      outAmount: 50,
+                      comment: 'my bill',
+                      date: new Date(2017, 4, 15),
+                      in_account: acc._id,
+                      subcategory: subCat._id
+                    }, (err, trans) => {
+                      if (err) done(err)
+                      Transaction.create({
+                        inAmount: 10,
+                        comment: 'bank interest',
+                        date: new Date(2017, 4, 15),
+                        in_account: acc._id,
+                        subcategory: subCat._id
+                      }, (err, trans) => {
+                        if (err) done(err)
+                        Transaction.aggregate([
+                          {
+                            $match: {
+                              in_account: acc._id
+                            }
+                          },
+                          { $group: {
+                            _id: '$in_account',
+                            balanceIn: { $sum: '$inAmount' },
+                            balanceOut: { $sum: '$outAmount' }
+                          }}
+                        ], function (err, result) {
+                          if (err) {
+                            done(err)
+                          }
+                          console.log(JSON.stringify(result))
+                          done()
+                        })
+                      })
+                    })
                   })
                 }
               })
@@ -84,13 +165,5 @@ describe('CRUD on Category Model', function () {
       assert.isOk(err.errors[ 'subcategory' ])
       done()
     })
-  })
-
-  it('Can update category name', function (done) {
-    done()
-  })
-
-  it('When trying to edit a category with invalid id should give an error', function (done) {
-    done()
   })
 })
