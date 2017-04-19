@@ -1,6 +1,5 @@
-<h1>List Trans</h1>
-<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#AccountModal"
-data-form-type="add">
+<h1>Transactions</h1>
+<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#TransactionFormModal" data-form-type="add" >
   Add
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 </button>
@@ -18,6 +17,30 @@ data-form-type="add">
           </tr>
       </thead>
       <tbody>
+      <!-- List all transactions -->
+      <% transactions.forEach(function (transaction) {
+        var topCategory
+        for (var i = 0; i < categories.length; i++) {
+          var subCats = categories[i].subCategories
+          for (var j = 0; j < subCats.length; j++) {
+            // topCategory += typeof(subCats[j]._id) +'_'
+            if (subCats[j]._id.toString() == transaction.subcategory._id) {
+              topCategory = categories[i].name
+            }
+          }
+        }
+      %>
+        <tr>
+            <th scope="row"><%- transaction.date.toDateString() %></th>
+            <td><%- topCategory %>: <%- transaction.subcategory.name %></td>
+            <td><%- transaction.comment %></td>
+            <td><%- transaction.inAmount %></td>
+            <td><%- transaction.outAmount %></td>
+            <td>Edit | Delete</td>
+        </tr>
+      <% }) %>
+      <!-- List End -->
+      <!--
           <tr>
               <th scope="row">10/02/2017</th>
               <td>Bills: Telephone</td>
@@ -34,6 +57,84 @@ data-form-type="add">
               <td>2</td>
               <td>Edit | Delete</td>
           </tr>
+        -->
       </tbody>
   </table>
+</div>
+
+<!-- Modal Content for Add New/Edit Transaction Form -->
+<div class="modal fade" id="TransactionFormModal" tabindex="-1" role="dialog" aria-labelledby="AccountModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add New Transaction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Transactions</h3>
+                    </div>
+                    <div class="panel-body">
+                      <!-- Transaction Add/Edit Form -->
+                      <form id="accountForm" action="/transactions" method="POST">
+                        <div class="form-group">
+                          <label for="transAccountId">Account Name</label>
+                          <!-- List all accounts -->
+                          <select class="form-control" id="transAccountId" name="accountId">
+                            <% accounts.forEach(function(account){
+                              var preselect = account.id === accountId ? 'selected' : ''
+                            %>
+                              <option value="<%- account._id %>" <%- preselect %> ><%- account.name %></option>
+                            <% }) %>
+                          </select>
+                          <!-- Accounts -->
+                        </div>
+                        <div class="form-group">
+                          <label for="dateInput">Date</label>
+                          <input type="date" class="form-control" id="dateInput" name="transDate">
+                        </div>
+                        <div class="form-group">
+                          <label for="transCategorySelect">Category</label>
+                          <!-- List categories in this format (Master Category: Sub) -->
+                          <select class="form-control" id="transCategorySelect" name="subcategoryId" >
+                            <% categories.forEach(function (category) {
+                                category.subCategories.forEach(function (subcaregory) {
+                            %>
+                                <option value="<%- subcaregory._id %>"><%- category.name %>: <%- subcaregory.name %></option>
+                            <%  })
+                              })
+                            %>
+                          </select>
+                          <!-- List End -->
+                        </div>
+                        <div class="form-group">
+                          <label for="dateInput">Comment</label>
+                          <input type="text" class="form-control" id="transCommentInput" name="comment">
+                        </div>
+                        <div class="form-group">
+                          <label for="transIncomeInput">Income</label>
+                          <input type="text" class="form-control" id="transIncomeInput" name="income">
+                        </div>
+                        <div class="form-group">
+                          <label for="transExpenseInput">Expense</label>
+                          <input type="text" class="form-control" id="transExpenseInput" name="expense">
+                        </div>
+                        <button id="addEditButton" type="submit" class="btn btn-primary">Create</button>
+                      </form>
+                      <!-- Transaction  Add/Edit Form> -->
+                      <p>
+                      <!-- TODO Transaction delete -->
+                      <form id="accountDeleteForm" action="/transactions/" method="POST" style="display: none">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>

@@ -54,37 +54,37 @@ describe('CRUD on Category Model', function () {
       password: 'password'
     }, (err, newUser) => {
       if (err) return done(err)
-        SubCategory.create({
-          name: 'Telephone Bills'
-        }, function (err, subCat) {
-          if (err) {
-            return done(err)
-          } else {
-            Category.create({
-              name: 'Bills',
-              belongs_to: newUser._id
+      SubCategory.create({
+        name: 'Telephone Bills'
+      }, function (err, subCat) {
+        if (err) {
+          return done(err)
+        } else {
+          Category.create({
+            name: 'Bills',
+            belongs_to: newUser._id
               // subCategories: [ subCat._id ]
-            }, (err, cat) => {
-              if (err) {
-                return done(err)
-              } else {
-                Category.findById(cat._id, (err, foundCat) => {
+          }, (err, cat) => {
+            if (err) {
+              return done(err)
+            } else {
+              Category.findById(cat._id, (err, foundCat) => {
+                if (err) return done(err)
+                foundCat.subCategories.push(subCat._id)
+                foundCat.save((err, savedCat) => {
                   if (err) return done(err)
-                  foundCat.subCategories.push(subCat._id)
-                  foundCat.save((err, savedCat) => {
+                  Category.findById(cat._id, (err, foundCat) => {
                     if (err) return done(err)
-                    Category.findById(cat._id, (err, foundCat) => {
-                      if (err) return done(err)
-                      assert.strictEqual(foundCat.subCategories[0].name, 'Telephone Bills')
-                      done()
-                    }).populate('subCategories')
-                  })
+                    assert.strictEqual(foundCat.subCategories[0].name, 'Telephone Bills')
+                    done()
+                  }).populate('subCategories')
                 })
-              }
-            })
-          }
-        })
+              })
+            }
+          })
+        }
       })
+    })
   })
 
   it('Can update category name', function (done) {
@@ -145,36 +145,25 @@ describe('CRUD on Category Model', function () {
             }, (err, cat) => {
               if (err) done(err)
               SubCategory.count({}, (err, count) => {
-                if(err) done(err)
+                if (err) done(err)
                 console.log(count)
                 cat.subCategories.forEach((subcatId) => {
                   // console.log(subcat)
                   SubCategory.findByIdAndRemove(subcatId, (err, subcat) => {
                     console.log('removing subCatId: ' + subcat._id)
-                    if(err) done(err)
+                    if (err) done(err)
                   })
                 })
                 SubCategory.count({}, (err, count) => {
-                  if(err) done(err)
-                  assert.strictEqual(count,1)
+                  if (err) done(err)
+                  assert.strictEqual(count, 1)
                   done()
                 })
               })
             })
-            // console.log(subCat1)
-            // console.log(subCat2)
-            // console.log(subCat3)
-            // console.log(newUser)
-            // done()
           })
         })
       })
-      // Category.remove({
-      //
-      // }, (err, cat) => {
-      //   assert.isOk(err)
-      //   done()
-      // })
     })
   })
 })

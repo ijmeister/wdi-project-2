@@ -10,7 +10,7 @@ let usersController = {
     })
   },
   processLogin: passport.authenticate('local', {
-    successRedirect: '/users/dashboard',
+    successRedirect: '/accounts/',
     failureRedirect: '/users/login',
     failureFlash: true
   }),
@@ -116,7 +116,6 @@ let usersController = {
         // Add some errors and redirect to dashboard
         res.redirect('/users/profile')
       } else {
-        console.log('successfully updated.')
         req.flash('success', 'Profile updated.')
         res.redirect('/users/profile')
       }

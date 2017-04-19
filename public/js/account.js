@@ -1,6 +1,5 @@
 $(function () {
   $('a.list-group-item').click(function (event) {
-    var target = $(event.target)
     if ($(event.target)[0].nodeName !== 'A') {
       event.preventDefault()
     }
@@ -25,4 +24,19 @@ $(function () {
       modal.find('button#addEditButton').text('Save')
     }
   })
+
+  function getCategoryName (categories, subcategoryId) {
+    var topCategory
+    for (var i = 0; i < categories.length; i++) {
+      var subCats = categories[i].subCategories
+      for (var j = 0; j < subCats.length; j++) {
+        console.log(subcategoryId)
+        console.log(subCats[j]._id)
+        if (subCats[j]._id === subcategoryId) {
+          topCategory = categories[i].name
+        }
+      }
+    }
+    return topCategory
+  }
 })

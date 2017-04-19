@@ -2,6 +2,8 @@
  * Controller for both categories and subcategories models
  */
 const Account = require('../models/account')
+const Category = require('../models/category')
+const Transaction = require('../models/transaction')
 
 let accountController = {
   list: (req, res) => {
@@ -22,13 +24,41 @@ let accountController = {
   viewAcc: (req, res) => {
     Account.find({ belongs_to: req.user._id }, (err, accs) => {
       if (err) {
-        console.error(err)
+        req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
         res.redirect('/accounts')
       } else {
-        res.render('accounts/list_trans', {
-          layout: 'layouts/accounts',
-          accounts: accs
-        })
+        // get all the transactions for this accountId
+        Transaction.find({ in_account: req.params.id }, (err, trans) => {
+          if (err) {
+            req.flash('error', 'Selected account seems to be invalid. Please try again.')
+            res.redirect('/accounts')
+          }
+          Category.find({ belongs_to: req.user._id }, (err, cats) => {
+            if (err) {
+              req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+              res.redirect('/accounts')
+            } else {
+              // var topCategory
+              // for (var i = 0; i < cats.length; i++) {
+              //   var subCats = cats[i].subCategories
+              //   for (var j = 0; j < subCats.length; j++) {
+              //     console.log(subCats[j]._id,subCats[j].name)
+              //     if (subCats[j]._id == '58f76a63f8cc8b7541f3509d') {
+              //       topCategory = cats[i].name
+              //     }
+              //   }
+              // }
+              // console.log(topCategory)
+              res.render('accounts/list_trans', {
+                layout: 'layouts/accounts',
+                accounts: accs,
+                categories: cats,
+                transactions: trans,
+                accountId: req.params.id
+              })
+            }
+          }).populate('subCategories')
+        }).populate('subcategory')
       }
     })
   },
@@ -71,59 +101,7 @@ let accountController = {
     }
   },
 
-  // updateSubCat: (req, res) => {
-  //   // if (!req.isAuthenticated()) return res.redirect('/users/login')
-  //   // res.send('SubCatId:' + req.params.id + ' New Name: ' + req.body.subCategoryEditName)
-  //   // Category.findByIdAndUpdate(req.params.id)
-  //   if (req.body.subCategoryEditName != null && req.body.subCategoryEditName) {
-  //     SubCategory.findByIdAndUpdate(req.params.id, { name: req.body.subCategoryEditName }, (err, subCat) => {
-  //       if (err) {
-  //         req.flash('error', 'Errors encountered while trying to update.')
-  //         res.redirect('/categories')
-  //       } else {
-  //         req.flash('success', 'Subcategory updated.')
-  //         res.redirect('/categories')
-  //       }
-  //     })
-  //   } else {
-  //     req.flash('error', 'Invalid subcategory name.')
-  //     res.redirect('/categories')
-  //   }
-  // },
-  //
-  // deleteCat: (req, res) => {
-  //   // This should remove all the subcategories as well
-  //   Category.findByIdAndRemove(req.params.id, (err, cat) => {
-  //     if (err) {
-  //       req.flash('error', 'Errors encountered while trying to delete.')
-  //       res.redirect('/categories')
-  //     } else {
-  //       cat.subCategories.forEach((subcategory) => {
-  //         SubCategory.findByIdAndRemove(subcategory, (err, subcat) => {
-  //           if (err) {
-  //             req.flash('error', 'Errors encountered while trying to delete.')
-  //             res.redirect('/categories')
-  //           }
-  //         })
-  //         req.flash('success', 'Category and its corresponding subcatgories deleted.')
-  //         res.redirect('/categories')
-  //       })
-  //     }
-  //   })
-  // },
-  //
-  // deleteSubCat: (req, res) => {
-  //   // if (!req.isAuthenticated()) return res.redirect('/users/login')
-  //   SubCategory.findByIdAndRemove(req.params.id, (err, cat) => {
-  //     if (err) {
-  //       req.flash('error', 'Errors encountered while trying to delete.')
-  //       res.redirect('/categories')
-  //     } else {
-  //       req.flash('success', 'Subcategory deleted.')
-  //       res.redirect('/categories')
-  //     }
-  //   })
-  // }
+
 }
 
 module.exports = accountController

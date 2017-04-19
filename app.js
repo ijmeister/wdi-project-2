@@ -18,6 +18,7 @@ const isLoggedIn = require('./middleware/isLoggedIn')
 const userRouter = require('./routes/users_router')
 const categoryRouter = require('./routes/categories_router')
 const accountRouter = require('./routes/accounts_router')
+const transRouter = require('./routes/transactions_router')
 
 const PORT = process.env.PORT || 3000
 var dbURI
@@ -75,6 +76,7 @@ app.use('/users', userRouter)
 app.use(isLoggedIn)
 app.use('/categories', categoryRouter)
 app.use('/accounts', accountRouter)
+app.use('/transactions', transRouter)
 
 // ROUTERS
 

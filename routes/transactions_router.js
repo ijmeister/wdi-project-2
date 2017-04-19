@@ -1,18 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const accountController = require('../controllers/accounts_controller')
+const transController = require('../controllers/transactions_controller')
 
 router.route('/')
-.get(accountController.list)
-.post(accountController.add)
+// .get(transController.list)
+.post(transController.add)
 
 router.route('/:id')
-.get(accountController.viewAcc)
-.put(accountController.updateAcc)
+// .get(transController.viewAcc)
+// .put(transController.updateAcc)
 // .delete(accountController.deleteAcc)
-
-router.route('/sub/:id')
-// .put(accountController.updateSubCat)
-// .delete(accountController.deleteSubCat)
 
 module.exports = router
