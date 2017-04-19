@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FinHelp</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <%- style ? style : '' %>
+    <%# <link rel="stylesheet" href="/style.css">%>
+  </head>
+  <body>
+    <div class="container">
+      <% include ./partials/usermenu %>
+      <% include ./partials/alerts %>
+      <%# <script src="../js/main.js" charset="utf-8"></script>%>
+      <div class="container-fluid">
+        <div class="row row-offcanvas row-offcanvas-right">
+          <div class="col-xs-12 col-sm-9 col-sm-push-3">
+            <button type="button" class="pull-left btn btn-default visible-xs" data-toggle="offcanvas" aria-expanded="false" aria-controls="navbar">
+              <i class="fa fa-navicon"></i>
+            </button>
+            <%- body %>
+          </div><!--/.col-xs-12.col-sm-9-->
+
+          <!-- Side Bar -->
+          <% include ./partials/accountmenu %>
+          <!--/.sidebar-offcanvas-->
+        </div><!--/row-->
+
+        <hr>
+
+      </div><!--/.container-->
+
+      <script src="../js/account.js" charset="utf-8"></script>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <%- script %>
+  </body>
+</html>

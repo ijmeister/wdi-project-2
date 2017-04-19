@@ -1,0 +1,71 @@
+<!-- Side Bar -->
+<div class="col-xs-6 col-sm-3 col-sm-pull-9 sidebar-offcanvas" id="sidebar">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Accounts</h3>
+    </div>
+    <div class="panel-body">
+      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#AccountModal"
+      data-form-type="add">
+        Add New Account
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </button>
+      <p>
+      <div class="list-group">
+        <% accounts.forEach(function(account) { %>
+          <a href="#" class="list-group-item"><%- account.name %>
+            <button type="button" class="btn btn-default btn-xs" aria-label="AddEdit" data-toggle="modal" data-target="#AccountModal" data-form-type="edit" data-account-id="<%- account._id %>" data-account-name="<%- account.name %>" >
+              <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+            </button>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+</div><!--/.sidebar-offcanvas-->
+
+<!-- Modal Content for Add New Account Form -->
+<div class="modal fade" id="AccountModal" tabindex="-1" role="dialog" aria-labelledby="AccountModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add New Account</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Account</h3>
+                    </div>
+                    <div class="panel-body">
+                      <!-- Account Add/Edit Form -->
+                      <form id="accountForm" action="/accounts" method="POST">
+                        <div class="form-group">
+                          <label for="accountNameInput">Name</label>
+                          <input type="text" class="form-control" id="accountNameInput" name="accountName">
+                        </div>
+                        <div class="form-group">
+                          <select class="form-control" id="accountTypeDropdown" name="accountType" style="max-width: 200px">
+                            <option value="Savings">Savings</option>
+                            <option value="Credit Card">Credit Card</option>
+                          </select>
+                        </div>
+                        <button id="addEditButton" type="submit" class="btn btn-primary">Create</button>
+                      </form>
+                      <!-- Account  Add/Edit Form> -->
+                      <p>
+                      <!-- TODO Account delete -->
+                      <form id="accountDeleteForm" action="/account/" method="POST" style="display: none">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
