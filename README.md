@@ -15,7 +15,7 @@ Following functionalities are currently supported (on top of user creation and a
 
 ## Use Case Diagram
 
-![screenshot](images/readme/Use Case.png "Use Case Diagram")
+![screenshot](images/readme/Use_Case.png "Use Case Diagram")
 
 ## ER Diagram
 
