@@ -12,11 +12,23 @@
       </button>
       <p>
       <div class="list-group">
-        <% accounts.forEach(function(account) { %>
-          <a href="/accounts/<%- account._id %>" class="list-group-item"><%- account.name %>
-            <button type="button" class="btn btn-default btn-xs" aria-label="AddEdit" data-toggle="modal" data-target="#AccountModal" data-form-type="edit" data-account-id="<%- account._id %>" data-account-name="<%- account.name %>" >
-              <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
-            </button>
+        <% accounts.forEach(function(account) {
+          var calBalance = 0
+          var applyPosNegClass = 'positiveBadge'
+          for (var i = 0; i < acctBalances.length; i++) {
+            if(acctBalances[i]._id.toString() == account._id) {
+              calBalance = Number(acctBalances[i].balanceIn) - Number(acctBalances[i].balanceOut)
+              if(calBalance < 0) { applyPosNegClass = 'negativeAmount negativeBadge'} else [
+                applyPosNegClass = 'positiveBadge'
+              ]
+            }
+          }
+        %>
+
+          <a href="/accounts/<%- account._id %>" class="list-group-item"><button type="button" class="btn btn-default btn-xs" aria-label="AddEdit" data-toggle="modal" data-target="#AccountModal" data-form-type="edit" data-account-id="<%- account._id %>" data-account-name="<%- account.name %>" >
+            <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+          </button> <%- account.name %>
+          <span class="badge <%- applyPosNegClass %>"><%- calBalance %></span>
           </a>
         <% }) %>
       </div>
@@ -57,9 +69,6 @@
                       <!-- Account  Add/Edit Form> -->
                       <p>
                       <!-- TODO Account delete -->
-                      <form id="accountDeleteForm" action="/account/" method="POST" style="display: none">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                      </form>
                       <!-- TODO -->
                     </div>
                 </div>

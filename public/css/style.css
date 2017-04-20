@@ -2,3 +2,24 @@
   max-width: 400px;
   margin-top: 15px;
 }
+
+#accountBalanceDiv {
+  text-align:right;
+}
+
+table#transactionTable thead tr th:nth-child(6) {
+  width: 15%;
+}
+
+.positiveBadge {
+  color: #333;
+  background-color: #ddd;
+}
+
+.negativeAmount {
+  color: #a94442;
+}
+
+.negativeBadge {
+  background-color: #f2dede;
+}

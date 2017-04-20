@@ -4,7 +4,7 @@ const passport = require('../config/passport')
 
 let usersController = {
   loginView: (req, res) => {
-    if (req.isAuthenticated()) return res.redirect('/users/dashboard')
+    if (req.isAuthenticated()) return res.redirect('/accounts/dashboard')
     res.render('users/login', {
       layout: 'layouts/login'
     })
@@ -95,7 +95,7 @@ let usersController = {
             } else {
               // FLASH
               passport.authenticate('local', {
-                successRedirect: '/users/dashboard'
+                successRedirect: '/accounts/'
               })(req, res)
             }
           })

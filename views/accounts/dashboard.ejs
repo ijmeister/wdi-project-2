@@ -1,1 +1,40 @@
-<h1>Welcome</h1>
+<h1>All Transactions</h1>
+
+<div class="panel panel-default" style="max-height:800px; overflow: auto">
+  <table class="table table-hover table-condensed" id="transactionTable">
+      <thead>
+          <tr>
+              <th>Account</th>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Comment</th>
+              <th>Inflow</th>
+              <th>Outflow</th>
+          </tr>
+      </thead>
+      <tbody>
+      <!-- List all transactions -->
+      <% transactions.forEach(function (transaction, index) {
+        var topCategory
+        for (var i = 0; i < categories.length; i++) {
+          var subCats = categories[i].subCategories
+          for (var j = 0; j < subCats.length; j++) {
+            // topCategory += typeof(subCats[j]._id) +'_'
+            if (subCats[j]._id.toString() == transaction.subcategory._id) {
+              topCategory = categories[i].name
+            }
+          }
+        }
+      %>
+        <tr>
+            <th scope="row"><%- transaction.in_account.name %></th>
+            <td><%- transaction.date.toLocaleDateString() %></th>
+            <td><%- topCategory %>: <%- transaction.subcategory.name %></td>
+            <td><%- transaction.comment %></td>
+            <td><%- transaction.inAmount %></td>
+            <td><%- transaction.outAmount %></td>
+        </tr>
+      <% }) %>
+      </tbody>
+  </table>
+</div>

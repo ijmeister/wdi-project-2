@@ -44,15 +44,9 @@ TransactionSchema.statics.getAccountsBalance = function (accountIds, next) {
     }}
   ], function (err, result) {
     if (err) { return false }
-    console.log(JSON.stringify(result))
+    // console.log(JSON.stringify(result))
     next(null, result)
   })
-  // this.findOne({
-  //   email: email
-  // }, function (err, foundUser) {
-  //   if (err) return false
-  //   next(null, foundUser)
-  // })
 }
 
 var Transaction = mongoose.model('Transaction', TransactionSchema)

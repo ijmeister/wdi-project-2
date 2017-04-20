@@ -8,17 +8,100 @@ const Transaction = require('../models/transaction')
 let accountController = {
   list: (req, res) => {
     // if (!req.isAuthenticated()) return res.redirect('/users/login')
-    Account.find({ belongs_to: req.user._id }, (err, accs) => {
+    Category.find({ belongs_to: req.user._id }, (err, cats) => {
       if (err) {
-        console.error(err)
+        req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
         res.redirect('/accounts')
       } else {
-        res.render('accounts/dashboard', {
-          layout: 'layouts/accounts',
-          accounts: accs
+        Account.find({ belongs_to: req.user._id }, (err, accs) => {
+          if (err) {
+            req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+            res.redirect('/accounts')
+          } else {
+            // if (accs && !accs.length) {
+            //   // res.send('user has no accounts')
+            // } else {
+              // get all the transactions for this accountId
+              var accountIds = accs.map((account) => account._id)
+              Transaction.find({ in_account: { $in: accountIds } }, (err, trans) => {
+                if (err) {
+                  req.flash('error', 'Selected account seems to be invalid. Please try again.')
+                  res.redirect('/accounts')
+                } else {
+                  if(trans && trans.length) {
+                    Transaction.getAccountsBalance(accountIds, (err, result) => {
+                      if (err) {
+                        req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+                        res.redirect('/accounts/')
+                      } else {
+                        res.render('accounts/dashboard', {
+                          layout: 'layouts/accounts',
+                          accounts: accs,
+                          categories: cats,
+                          transactions: trans,
+                          acctBalances: result
+                        })
+                      }
+                    })
+                  } else {
+                    res.render('accounts/dashboard', {
+                      layout: 'layouts/accounts',
+                      accounts: accs,
+                      categories: cats,
+                      transactions: trans,
+                      acctBalances: []
+                    })
+                  }
+                }
+              }).populate('subcategory in_account')
+          }
         })
       }
-    })
+    }).populate('subCategories')
+
+    //
+    // Account.find({ belongs_to: req.user._id }, (err, accs) => {
+    //   if (err) {
+    //     req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+    //     res.redirect('/accounts')
+    //   } else {
+    //     if (accs && !accs.length) {
+    //       res.send('user has no accounts')
+    //     } else {
+    //       // get all the transactions for this accountId
+    //       var accountIds = accs.map((account) => account._id)
+    //       Transaction.find({ in_account: { $in: accountIds } }, (err, trans) => {
+    //         if (err) {
+    //           req.flash('error', 'Selected account seems to be invalid. Please try again.')
+    //           res.redirect('/accounts')
+    //         }
+    //         Category.find({ belongs_to: req.user._id }, (err, cats) => {
+    //           if (err) {
+    //             req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+    //             res.redirect('/accounts')
+    //           } else {
+    //             var accountIds = accs.map((account) => account._id)
+    //             Transaction.getAccountsBalance(accountIds, (err, result) => {
+    //               if (err) {
+    //                 req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
+    //                 res.redirect('/accounts')
+    //               } else {
+    //                 // console.log(result)
+    //                 res.render('accounts/dashboard', {
+    //                   layout: 'layouts/accounts',
+    //                   accounts: accs,
+    //                   categories: cats,
+    //                   transactions: trans,
+    //                   acctBalances: result
+    //                 })
+    //               }
+    //             })
+    //           }
+    //         }).populate('subCategories')
+    //       }).populate('subcategory in_account')
+    //     }
+    //   }
+    // })
   },
 
   viewAcc: (req, res) => {
@@ -39,7 +122,6 @@ let accountController = {
               res.redirect('/accounts')
             } else {
               var accountIds = accs.map((account) => account._id)
-              console.log(accountIds)
               Transaction.getAccountsBalance(accountIds, (err, result) => {
                 if (err) {
                   req.flash('error', 'Errors encountered while trying to retrieve required info. Please try again.')
@@ -51,7 +133,7 @@ let accountController = {
                     accounts: accs,
                     categories: cats,
                     transactions: trans,
-                    balance: result,
+                    acctBalances: result,
                     accountId: req.params.id
                   })
                 }
