@@ -18,9 +18,11 @@
             <a href="#collapseListGroup<%- index + 1 %>" class="" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="collapseListGroup<%- index + 1 %>">
               <%- category.name %>
             </a>
-            <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-category-id="<%- category._id %>" data-type="cat" data-category-name="<%- category.name %>">
-              <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
-            </button>
+            <span class="badge glyphicon-badge">
+              <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-category-id="<%- category._id %>" data-type="cat" data-category-name="<%- category.name %>">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+              </button>
+            </span>
           </h4>
         </div>
         <div class="panel-collapse collapse in" role="tabpanel" id="collapseListGroup<%- index + 1 %>" aria-labelledby="collapseListGroupHeading<%- index + 1 %>" aria-expanded="true">
@@ -28,9 +30,11 @@
               <!--  -->
                 <% category.subCategories.forEach(function(subcategory) { %>
                   <li class="list-group-item"><%- subcategory.name %>
-                    <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-subcategory-id="<%- subcategory._id %>" data-type="subCat" data-subcategory-name="<%- subcategory.name %>">
-                      <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
-                    </button>
+                    <span class="badge glyphicon-badge">
+                      <button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editFormModal" data-subcategory-id="<%- subcategory._id %>" data-type="subCat" data-subcategory-name="<%- subcategory.name %>">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
+                      </button>
+                    </span>
                   </li>
                 <% }) %>
               <!-- End -->

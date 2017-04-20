@@ -1,10 +1,20 @@
-<h1>Transactions</h1>
+<%
+  var accountName = 'Account Name'
+  for (var i = 0; i < accounts.length; i++) {
+    if (accounts[i]._id.toString() == accountId) {
+      accountName = accounts[i].name
+      break
+    }
+  }
+%>
+
+<h2>Account: <%- accountName %></h2>
 <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#TransactionFormModal" data-form-type="add" >
   Add
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 </button>
 <p>
-<div class="panel panel-default" style="max-height:800px; overflow: auto">
+<div class="panel panel-default panel-transaction-table">
   <table class="table table-hover table-condensed" id="transactionTable">
       <thead>
           <tr>
@@ -59,7 +69,7 @@
     for (var i = 0; i < acctBalances.length; i++) {
       if(acctBalances[i]._id.toString() === accountId) {
         calBalance = Number(acctBalances[i].balanceIn) - Number(acctBalances[i].balanceOut)
-        applyPosNegClass = calBalance > 0 ? '' : 'negativeAmount'
+        applyPosNegClass = calBalance >= 0 ? '' : 'negativeAmount'
         break
       }
     }
@@ -101,6 +111,7 @@
                           <label for="dateInput">Date</label>
                           <input type="date" class="form-control" id="dateInput" name="transDate">
                         </div>
+                        <span id="helpBlock" class="help-block">For manual entry, please enter in this format YYYY-MM-DD.</span>
                         <div class="form-group">
                           <label for="transCategorySelect">Category</label>
                           <!-- List categories in this format (Master Category: Sub) -->

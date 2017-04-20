@@ -1,4 +1,4 @@
-<h1>All Transactions</h1>
+<h2>All Transactions</h2>
 
 <div class="panel panel-default" style="max-height:800px; overflow: auto">
   <table class="table table-hover table-condensed" id="transactionTable">
@@ -37,4 +37,19 @@
       <% }) %>
       </tbody>
   </table>
+</div>
+
+<div class="row well well-sm" id="accountBalanceDiv">
+  <!-- Calculate Account Balance -->
+  <%
+    var calBalance = 0
+    var applyPosNegClass
+    for (var i = 0; i < acctBalances.length; i++) {
+      calBalance += Number(acctBalances[i].balanceIn) - Number(acctBalances[i].balanceOut)
+    }
+    applyPosNegClass = calBalance >= 0 ? '' : 'negativeAmount'
+  %>
+  <div class="col-md-9"><h3>Net Accounts Balance:</h3></div>
+  <div class="col-md-3 <%- applyPosNegClass %>"><h3>$ <%- calBalance.toFixed(2) %></h3></div>
+  <!-- End -->
 </div>

@@ -15,14 +15,19 @@
                   <li><a href="/categories">Categories</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                  <li id="fat-menu" class="dropdown">
-                      <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Menu <span class="caret"></span>
-                    </a>
-                      <ul class="dropdown-menu" aria-labelledby="drop3">
-                          <li><a href="/users/profile">Profile</a></li>
-                          <li><a href="/users/logout">Logout</a></li>
-                      </ul>
-                  </li>
+                <li>
+                  <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#infoModal">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                  </button>
+                </li>
+                <li id="fat-menu" class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Menu <span class="caret"></span>
+                  </a>
+                    <ul class="dropdown-menu" aria-labelledby="drop3">
+                        <li><a href="/users/profile">Profile</a></li>
+                        <li><a href="/users/logout">Logout</a></li>
+                    </ul>
+                </li>
               </ul>
             <% } else { %>
               <ul class="nav navbar-nav navbar-right">
@@ -33,3 +38,25 @@
           </div>
     </div>
 </nav>
+
+<!-- Modal for Popup User Help Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">User Instructions</h4>
+      </div>
+      <div class="modal-body user-info-text">
+        <ol>
+          <li>Configure categories and subcategories.</li>
+          <li>Configure accounts of different types (Savings, Credit Card .etc) on the left menu.</li>
+          <li>Under each account, start tracking either expenses or incomes.</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

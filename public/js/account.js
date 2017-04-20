@@ -13,10 +13,12 @@ $(function () {
     if (formType === 'edit') {
       var accountId = button.data('account-id')
       var accountName = button.data('account-name')
+      var accountType = button.data('account-type')
 
       modal.find('.modal-title').text('Edit Account')
       modal.find('form#accountForm').attr('action', '/accounts/' + accountId + '?_method=PUT')
       modal.find('input').val(accountName)
+      modal.find('option[value="' + accountType + '"]').attr('selected', true)
       modal.find('button#addEditButton').text('Save')
     } else if (formType === 'add') {
       modal.find('.modal-title').text('Add New Account')

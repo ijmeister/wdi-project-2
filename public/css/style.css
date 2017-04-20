@@ -11,6 +11,11 @@ table#transactionTable thead tr th:nth-child(6) {
   width: 15%;
 }
 
+.panel-transaction-table {
+  max-height: 500px;
+  overflow: auto;
+}
+
 .positiveBadge {
   color: #333;
   background-color: #ddd;
@@ -22,4 +27,13 @@ table#transactionTable thead tr th:nth-child(6) {
 
 .negativeBadge {
   background-color: #f2dede;
+}
+
+.user-info-text {
+  font-size: 15px;
+}
+
+.glyphicon-badge {
+  padding: 0px;
+  float:right;
 }

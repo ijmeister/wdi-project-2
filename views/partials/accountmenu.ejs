@@ -25,7 +25,7 @@
           }
         %>
 
-          <a href="/accounts/<%- account._id %>" class="list-group-item"><button type="button" class="btn btn-default btn-xs" aria-label="AddEdit" data-toggle="modal" data-target="#AccountModal" data-form-type="edit" data-account-id="<%- account._id %>" data-account-name="<%- account.name %>" >
+          <a href="/accounts/<%- account._id %>" class="list-group-item"><button type="button" class="btn btn-default btn-xs" aria-label="AddEdit" data-toggle="modal" data-target="#AccountModal" data-form-type="edit" data-account-id="<%- account._id %>" data-account-name="<%- account.name %>" data-account-type="<%- account.type %>">
             <span class="glyphicon glyphicon-pencil" aria-hidden="t5rue"></span>
           </button> <%- account.name %>
           <span class="badge <%- applyPosNegClass %>"><%- calBalance %></span>
