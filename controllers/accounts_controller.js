@@ -19,7 +19,7 @@ let accountController = {
             res.redirect('/accounts')
           } else {
             var accountIds = accs.map((account) => account._id)
-            Transaction.find({ in_account: { $in: accountIds } }, (err, trans) => {
+            Transaction.find({ in_account: { $in: accountIds } }, null, {sort: 'date'}, (err, trans) => {
               if (err) {
                 req.flash('error', 'Selected account seems to be invalid. Please try again.')
                 res.redirect('/accounts')
@@ -63,7 +63,7 @@ let accountController = {
         res.redirect('/accounts')
       } else {
         // get all the transactions for this accountId
-        Transaction.find({ in_account: req.params.id }, (err, trans) => {
+        Transaction.find({ in_account: req.params.id }, null, {sort: 'date'}, (err, trans) => {
           if (err) {
             req.flash('error', 'Selected account seems to be invalid. Please try again.')
             res.redirect('/accounts')
@@ -125,7 +125,7 @@ let accountController = {
           req.flash('error', 'Errors encountered while trying to update.')
           res.redirect('/accounts')
         } else {
-          req.flash('success', 'Category updated.')
+          req.flash('success', 'Account updated.')
           res.redirect('/accounts')
         }
       })

@@ -4,6 +4,14 @@ $(function () {
       event.preventDefault()
     }
   })
+  $('.btn-danger').click(function (event) {
+    event.preventDefault()
+    bootbox.confirm('Are you sure if you want to delete?', function (result) {
+      if (result) {
+        $(event.target.parentNode).submit()
+      }
+    })
+  })
   $('#AccountModal').on('show.bs.modal', function (event) {
     // event.stopPropagation()
     var button = $(event.relatedTarget) // Button that triggered the modal
