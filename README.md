@@ -1,6 +1,6 @@
 # wdi-project-2 - FinHelp
 
-#### View [Demo](https://finhelp.herokuapp.com/)
+#### [App Deployed on Heroku](https://finhelp.herokuapp.com/)
 
 ## Overview
 
