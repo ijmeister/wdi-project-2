@@ -21,12 +21,12 @@ let transactionController = {
     // res.send(transObj)
     var validateError = new Transaction(transObj).validateSync()
     if (validateError && Object.keys(validateError.errors).length) {
-      req.flash('error', 'There are some errors while tryign to save. Please check your inputs.')
+      req.flash('error', 'There are some errors while trying to save. Please check your inputs.')
       res.redirect('/accounts/' + accountIdInput)
     } else {
       Transaction.create(transObj, (err, newTrans) => {
         if (err) {
-          req.flash('error', 'There are some errors while tryign to save. Please check your inputs.')
+          req.flash('error', 'There are some errors while trying to save. Please check your inputs.')
           res.redirect('/accounts/' + accountIdInput)
         } else {
           req.flash('success', 'Transaction added.')

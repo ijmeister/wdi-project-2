@@ -3,6 +3,7 @@
  */
 const Category = require('../models/category')
 const SubCategory = require('../models/subCategory')
+const Transaction = require('../models/transaction')
 
 let categoryController = {
   list: (req, res) => {
@@ -127,34 +128,70 @@ let categoryController = {
 
   deleteCat: (req, res) => {
     // This should remove all the subcategories as well
-    Category.findByIdAndRemove(req.params.id, (err, cat) => {
+    // This will check first if there are existing transactions which are associated with this category id
+    var catIdToRemove = req.params.id
+    Category.findById(catIdToRemove, (err, cats) => {
       if (err) {
         req.flash('error', 'Errors encountered while trying to delete.')
         res.redirect('/categories')
       } else {
-        cat.subCategories.forEach((subcategory) => {
-          SubCategory.findByIdAndRemove(subcategory, (err, subcat) => {
-            if (err) {
-              req.flash('error', 'Errors encountered while trying to delete.')
+        var subCatIds = cats.subCategories.map((subcat) => subcat._id)
+        Transaction.find({ subcategory: { $in: subCatIds } }, (err, trans) => {
+          if (err) {
+            req.flash('error', 'Errors encountered while trying to delete.')
+            res.redirect('/categories')
+          } else {
+            if (trans && trans.length) {
+              // CANNOT delete as there are existing transactions with this subcategory id
+              req.flash('error', 'Delete cannot be completed as there are still transactions which are still referring to this category. Please update those transactions first.')
               res.redirect('/categories')
+            } else {
+              Category.findByIdAndRemove(req.params.id, (err, cat) => {
+                if (err) {
+                  req.flash('error', 'Errors encountered while trying to delete.')
+                  res.redirect('/categories')
+                } else {
+                  cat.subcategories.forEach((subcategory) => {
+                    SubCategory.findByIdAndRemove(subcategory, (err, subcat) => {
+                      if (err) {
+                        req.flash('error', 'Errors encountered while trying to delete.')
+                        res.redirect('/categories')
+                      }
+                    })
+                    req.flash('success', 'Category and its corresponding subcatgories deleted.')
+                    res.redirect('/categories')
+                  })
+                }
+              })
             }
-          })
-          req.flash('success', 'Category and its corresponding subcatgories deleted.')
-          res.redirect('/categories')
+          }
         })
       }
-    })
+    }).populate('subCategories')
   },
 
   deleteSubCat: (req, res) => {
-    // if (!req.isAuthenticated()) return res.redirect('/users/login')
-    SubCategory.findByIdAndRemove(req.params.id, (err, cat) => {
+    var subcatIdToRemove = req.params.id
+    Transaction.find({ subcategory: subcatIdToRemove }, (err, trans) => {
       if (err) {
         req.flash('error', 'Errors encountered while trying to delete.')
         res.redirect('/categories')
       } else {
-        req.flash('success', 'Subcategory deleted.')
-        res.redirect('/categories')
+        if (trans && trans.length) {
+          // CANNOT delete as there are existing transactions with this subcategory id
+          req.flash('error', 'Delete cannot be completed as there are still transactions which are still referring to this category. Please update those transactions first.')
+          res.redirect('/categories')
+        } else {
+          SubCategory.findByIdAndRemove(req.params.id, (err, cat) => {
+            if (err) {
+              req.flash('error', 'Errors encountered while trying to delete.')
+              res.redirect('/categories')
+            } else {
+              req.flash('success', 'Subcategory deleted.')
+              res.redirect('/categories')
+            }
+          })
+        }
       }
     })
   }
