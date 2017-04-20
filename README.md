@@ -28,7 +28,7 @@ Following functionalities are currently supported (on top of user creation and a
 ## Built With
 1. Express for Node.js
 2. Bootstrap
-  - Modals
+  * Modals
 3. Mongoose for MongoDB
 
 ## Development process
